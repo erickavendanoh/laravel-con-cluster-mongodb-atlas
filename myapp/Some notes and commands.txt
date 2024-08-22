@@ -1,0 +1,163 @@
+BASADO EN: https://learn.mongodb.com/courses/getting-started-with-laravel-and-mongodb?_ga=2.66090030.1857813636.1724106116-380764657.1717698978
+*Que básicamente es lo mismo que en página "MongoDB and Laravel Integration" ( https://www.mongodb.com/resources/products/compatibilities/mongodb-laravel-integration )
+
+*Para lograr conectar un proyecto de Laravel con un cluster en MongoDB Atlas fue una combinación de esa documentación oficial junto con ayuda de ChatGPT (como colocar las credenciales en el .env)
+
+
+
+
+
+-Tener instalado VS Code, PHP (8.2>), Composer
+-Tener una BD activa en Atlas MongoDB (en este caso creé una llamada "myappdb")
+
+*Para la BD:
+-Se debe tener una cuenta de MongoDB (empleé la que creé cuando se tomaron cursos de MongoDB University)
+-En pestaña "Overview", si no se ha creado un cluster, clic en "Create"->opcion "M0"->si sale ventana de "connect" clic en opción "close" por ahora
+-En sección "DEPLOYMENT"->"Database"->Clic sobre el cluster creado->Pestaña "Collections"->"Add My Own Data"->Poner datos de BD (nombre, en este caso "myappdb") y el de una colección (en este caso fue "posts")->"Create"
+
+
+
+
+
+-Abrir una ventana de VS Code, abrir terminal y con "cd" ir llegando a ruta donde se creará proyecto, luego:
+" composer create-project laravel/laravel myapp "
+*Cambiar en .env en "DB_CONNECTION=" de "sqlite" a "mysql"
+" cd myapp "
+" php artisan serve "
+
+
+
+
+
+Para meter MongoDB en laravel:
+
+" php --ini "
+*Para ver donde está el archivo de configuración (php.ini), que corresponde a lo de "Loaded Configuration File:" en la salida del comando
+
+-De esta página: https://pecl.php.net/package/mongodb/1.19.3/windows descargar el archivo correspondiente a la versión de PHP que tenga (y si es TS o NTS)
+-De carpeta que se descargue, copiar archivo "php_mongodb.dll" y pegarlo dentro de donde estén las extensiones de PHP (en caso de laragon, dentro de ruta C:\laragon\bin\php\php-8.2.19-nts-Win32-vs16-x64\ext)
+-En archivo php.ini, con base a documentación ( https://www.php.net/manual/en/mongodb.installation.windows.php ) agregar la línea: " extension=php_mongodb.dll " (yo la coloqué, buscando la palabra "extension", en parte donde estaban líneas como "extension=php_redis.dll", "extension=redis" "extension=fileinfo")
+-Detener y volver a iniciar servidor (en laragon si se está empleando)
+
+" composer require mongodb/laravel-mongodb "
+
+
+
+
+
+Para que se comunique Laravel con la BD en MongoDB:
+
+-Sacar la cadena de conexión (en MongoDB Atlas, sección "DEPLOYMENT"->"Database"->clic sobre el cluster donde está la BD que se empleará->pestaña "Overview"->Opción "Connect"->"Drivers" (en select "Driver" va "PHP" y en "Version" "PHPLIB 1.11 + mondodb-1.10 or later")->Copiar la connection string que viene en parte de abajo). *Reemplazar "<db_password>" con mi contraseña
+
+-En config\database.php: 
+En parte " 'default' => env('DB_CONNECTION', 'sqlite'), " cambiar lo de "sqlite" por "mongodb"
+y en " 'connections' => [ ]" agregar
+"
+'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('DB_URI', 'mongodb+srv://erickarmando167:clusterick15@cluster0.xomur.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
+            'database' => 'myappdb',
+        ],
+"
+
+
+
+-En archivo .env:
+
+En la parte de conexión va:
+"
+DB_CONNECTION=mongodb
+DB_HOST=cluster0.xomur.mongodb.net
+DB_PORT=27017
+DB_DATABASE=myappdb
+DB_USERNAME=erickarmando167
+DB_PASSWORD=clusterick15
+"
+*Lo de "cluster0.xomur.mongodb.net" es una parte que también viene en la cadena de conexión
+
+añadir al final
+"
+DB_URI = "mongodb+srv://erickarmando167:clusterick15@cluster0.xomur.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+"
+Es buena práctica mantener la cadena de conexión desacoplada del código con fines de seguridad
+
+Si el proyecto no carga las dependencias automáticamente, agregar en config/app.php:
+hasta el final
+"
+'providers' => ServiceProvider::defaultProviders()->merge([
+        // Other Service Providers
+        MongoDB\Laravel\MongoDBServiceProvider::class,
+        
+    ])->toArray(),
+"
+
+HASTA ESTE PUNTO LA CONFIURACIÓN DEL ENTORNO DEV YA ESTÁ HECHA
+
+
+
+
+
+-Se crea colección "posts" en la BD, desde Atlas.
+
+-Se insert un documento dentro de colección "posts", con la siguiente información:
+"
+{ 
+   "title":"First Blog Post",
+   "body" :"Lorem Ipsum, etc.",
+   "slug" :"first-blog-post"
+}
+"
+Quedando al final (ya con lo que genera de un principio MongoDB al dar en esa opción):
+"
+{"_id":{"$oid":"66c4fa87be76415c902727ba"},
+   "title":"First Blog Post",
+   "body" :"Lorem Ipsum, etc.",
+   "slug" :"first-blog-post"
+}
+"
+
+
+" php artisan make:model Post -mc "
+Este comando crea el modelo Post, su migración y su controlador a la vez, en las carpetas correspondientes
+
+
+En modelo Post (Post.php) cambiar lo de "use Illuminate\Database\Eloquent\Model;", que artisan coloca ya por defecto, por "use MongoDB\Laravel\Eloquent\Model;"
+también se agrega línea "// protected $collection = 'blog_posts';" (se comentó después de que se colocó). Cuando se hace una primera inserción en una BD en MongoDB empleando un modelo de Laravel, Laravel en automático crea una colección con el mismo nombre del modelo pero en plural, con esta línea lo que se logra es que cuando se genere la colección sea con el nombre indicado en esa propiedad $collection
+
+
+En PostController.php:
+"
+public function show($slug)
+    {
+        return view('post', [
+            'post' => Post::where('slug', '=', $slug)->first()
+        ]);
+    }
+"
+*Se importa modelo Post, agregando: "use App\Models\Post;"
+
+
+
+*The MongoDB Eloquent models support all the standard Eloquent query methods, but they also support additional queries that are specific to MongoDB itself. For more details, see https://github.com/mongodb/laravel-mongodb.
+
+
+-Se agrega la ruta que hará referencia a ese método en web.php:
+"
+Route::get('/post/{slug}', [PostController::class, 'show']);
+"
+
+-Se crea la vista donde se mostrará el post, creando archivo resources/views/post.blade.php, que dentro tendrá:
+"
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MyBlog</title>
+</head>
+<body>
+   <h1>{{$post->title}}</h1>
+   <div>{{$post->body}}</div>
+</body>
+</html>
+"
+
+*Se prueba funcionalidad hasta ahora con: http://localhost:8000/post/first-blog-post
