@@ -90,6 +90,7 @@ hasta el final
         
     ])->toArray(),
 "
+*El "ServiceProvider" es el que viene de "Illuminate\Support", ósea que se tiene el use "use Illuminate\Support\ServiceProvider;"
 
 HASTA ESTE PUNTO LA CONFIURACIÓN DEL ENTORNO DEV YA ESTÁ HECHA
 
