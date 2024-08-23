@@ -162,3 +162,30 @@ Route::get('/post/{slug}', [PostController::class, 'show']);
 "
 
 *Se prueba funcionalidad hasta ahora con: http://localhost:8000/post/first-blog-post
+
+
+
+
+
+El resto del CRUD (inserción, actualización y eliminación), si bien en la documentación se muestra que se hizo a manera de empleando una API creada en este proyecto de Laravel con sus respectivos Endpoint que corresponderán a cada operación, y los cuales servirán para ejecutar los métodos correspondientes a los que hacen referencia de el controller en cuestión, en este caso PostController.php (todo esto sería lo correspondiente a en archivo routes/api.php, que tuvo que ser creado antes), y todas las operaciones siendo ejecutadas empleando POSTMAN... al quere hacerlo así en POSTMAN marcaba "419 | Page Expired", y no es problema de MongoDB como supuse en un inicio, sino que es en general, ya que al hacer otro proyecto de prueba y con MySQL el error seguía apreciendo en POSTMAN. 
+Por lo tanto ya que el uso de POSTMAN no es tan indispensable por ahora sino que lo es más el poder hacer el CRUD como tal en una BD de un cluster en MongoDB Atlas, estas operaciones se harán a manera de vistas y con el Controller, aunque no venga así en la documentación.
+ASIMISMO, SE REDEFINIÓ LA ESTRCUTURA DEL PROYECTO EN CUANTO A VISTAS Y RUTAS PARA NO TENER PROBLEMAS CON NOMBRES DE ARCHIVOS Y ASÍ.
+
+**NOTA: Al parecer hay un problema en cómo MongoDB almacena y gestiona las sesiones en Laravel, lo que afecta la validación del token CSRF en solicitudes POST. Ya que incluso en la colección "sessions" (generada automáticamente debido a que en archivo .env "SESSION_DRIVER=file" y en config/session.php "'driver' => env('SESSION_DRIVER', 'database'),") se crea un registro cada vez que se recarga la página.
+Para poder hacer solicitudes POST (como envío de formularios con método POST, por ejemplo los usados para hacer inserción de registros):
+-En archivo .env: 
+cambiar en "SESSION_DRIVER=database" de "database" a "file" 
+-En config/session.php:
+cambiar en "'driver' => env('SESSION_DRIVER', 'database')," de "database" a "file"
+-Ejecutar comandos para limpiar la Caché de Configuración:
+"
+php artisan config:cache
+php artisan config:clear
+php artisan cache:clear
+"
+Con esto, ya no se creará una tabla (colección en el caso de MongoDB) "sessions" donde se van registrando las sesiones en la página (esto es por defecto cuando se crea un proyecto de Laravel), sino que ya se irán guardando a manera de archivos dentro de storage/framework/sessions.
+
+Sin embargo, la opción "file" solo es recomendable en proyectos pequeños, como este, pero para proyectos ya en producción no lo es tanto, ya que si el proyecto está en varios servidores cada uno tendría sus copias, además de que cuando se reinicie o se pierda acceso al sistema de archivos las sesiones podrían perderse. Por otro lado, almacenando esta información en la BD hay más seguridad, además de que es más robusto y escalable.
+
+
+
