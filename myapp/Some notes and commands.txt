@@ -123,7 +123,7 @@ Este comando crea el modelo Post, su migración y su controlador a la vez, en la
 
 
 En modelo Post (Post.php) cambiar lo de "use Illuminate\Database\Eloquent\Model;", que artisan coloca ya por defecto, por "use MongoDB\Laravel\Eloquent\Model;"
-también se agrega línea "// protected $collection = 'blog_posts';" (se comentó después de que se colocó). Cuando se hace una primera inserción en una BD en MongoDB empleando un modelo de Laravel, Laravel en automático crea una colección con el mismo nombre del modelo pero en plural, con esta línea lo que se logra es que cuando se genere la colección sea con el nombre indicado en esa propiedad $collection
+también se agregan líneas "protected $connection = 'mongodb';", y "// protected $collection = 'blog_posts';" (esta última se comentó después de que se colocó. Cuando se hace una primera inserción en una BD en MongoDB empleando un modelo de Laravel, Laravel en automático crea una colección con el mismo nombre del modelo pero en plural, con esta línea lo que se logra es que cuando se genere la colección sea con el nombre indicado en esa propiedad $collection)
 
 
 En PostController.php:
