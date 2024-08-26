@@ -4,6 +4,10 @@ BASADO EN: https://learn.mongodb.com/courses/getting-started-with-laravel-and-mo
 *Para lograr conectar un proyecto de Laravel con un cluster en MongoDB Atlas fue una combinación de esa documentación oficial junto con ayuda de ChatGPT (como colocar las credenciales en el .env)
 
 
+CONSIDERACIÓN IMPORTANTE: Hay que estar cuidando que la ip del equipo donde se esté trabajando esté en la lista "IP Access List" del cluster, esta se puede ver en apartado "SECURITY"->"Netwrok Access". 
+Para agregar la actual: se puede consultar página https://www.whatsmyip.org/ se copia la IP->opción "ADD IP ADDRESS"->se pega ahí la IP, y en "Comment:" se puede colocar algo para identificar esa IP.
+
+
 
 
 
