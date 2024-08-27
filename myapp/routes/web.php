@@ -11,7 +11,7 @@ Route::get('/', function () {
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/show/{slug}', [PostController::class, 'show']);
 
-Route::get('/new', function(){
+Route::get('/posts/new', function(){
     return view('posts.new');
 })->name('posts.new');
 Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
