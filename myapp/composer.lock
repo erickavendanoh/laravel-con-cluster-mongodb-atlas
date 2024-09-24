@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d582832c6a8cb8dcf404b077d0e079b5",
+    "content-hash": "265bb5ffc2bf03796565041d182325bc",
     "packages": [
         {
             "name": "brick/math",
@@ -1819,31 +1819,28 @@
         },
         {
             "name": "mongodb/laravel-mongodb",
-            "version": "4.7.1",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/laravel-mongodb.git",
-                "reference": "fb7bbf6b8d1bcb62dfac80e72261b280365759e3"
+                "reference": "3c1aab747ef67e818bb2b4f8191247112f588863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/laravel-mongodb/zipball/fb7bbf6b8d1bcb62dfac80e72261b280365759e3",
-                "reference": "fb7bbf6b8d1bcb62dfac80e72261b280365759e3",
+                "url": "https://api.github.com/repos/mongodb/laravel-mongodb/zipball/3c1aab747ef67e818bb2b4f8191247112f588863",
+                "reference": "3c1aab747ef67e818bb2b4f8191247112f588863",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0.0",
                 "ext-mongodb": "^1.15",
-                "illuminate/cache": "^10.36|^11",
-                "illuminate/container": "^10.0|^11",
-                "illuminate/database": "^10.30|^11",
-                "illuminate/events": "^10.0|^11",
-                "illuminate/support": "^10.0|^11",
-                "mongodb/mongodb": "^1.15",
-                "php": "^8.1"
-            },
-            "conflict": {
-                "illuminate/bus": "< 10.37.2"
+                "illuminate/cache": "^11",
+                "illuminate/container": "^11",
+                "illuminate/database": "^11",
+                "illuminate/events": "^11",
+                "illuminate/support": "^11",
+                "mongodb/mongodb": "^1.18",
+                "php": "^8.2"
             },
             "replace": {
                 "jenssegers/mongodb": "self.version"
@@ -1854,9 +1851,10 @@
                 "league/flysystem-read-only": "^3.0",
                 "mockery/mockery": "^1.4.4",
                 "mongodb/builder": "^0.2",
-                "orchestra/testbench": "^8.0|^9.0",
+                "orchestra/testbench": "^9.0",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.3",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^1.2",
                 "spatie/laravel-query-builder": "^5.6"
             },
             "suggest": {
@@ -1868,7 +1866,6 @@
                 "laravel": {
                     "providers": [
                         "MongoDB\\Laravel\\MongoDBServiceProvider",
-                        "MongoDB\\Laravel\\MongoDBQueueServiceProvider",
                         "MongoDB\\Laravel\\MongoDBBusServiceProvider"
                     ]
                 }
@@ -1917,9 +1914,9 @@
             "support": {
                 "issues": "https://www.mongodb.com/support",
                 "security": "https://www.mongodb.com/security",
-                "source": "https://github.com/mongodb/laravel-mongodb/tree/4.7.1"
+                "source": "https://github.com/mongodb/laravel-mongodb/tree/5.0.0"
             },
-            "time": "2024-07-25T09:52:51+00:00"
+            "time": "2024-09-12T09:44:12+00:00"
         },
         {
             "name": "mongodb/mongodb",

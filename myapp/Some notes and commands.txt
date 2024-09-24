@@ -1,3 +1,8 @@
+NOTA IMPORTANTE AL 24/09/23: En el comienzo del presente proyecto se trabajó con versión 4.7 del paquete mongodb/laravel-mongodb, pero posteriormente salió la 5.0, al momento la más actual. Por lo que se tratará de que esté proyecto siga funcionando pero ahora empleando esa versión.
+Hay que basarse del link de documentación oficial: https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/ (el "current" especifica que se trata de lo relacionado a la última versión o la más actual del paquete), y seguir pasos de sección "Upgrade Library Version" también prestando atención a secciones referenciadas allí como son "Compatibility" y " Breaking Changes" donde en esta última se indican funcionalidades que pueden haber cambiado o que directamente ya no existan con respecto a versiones anteriores (por ejemplo, lo de que ya no se usa "protected $connection=*nombre*", como en versión 4.7, en los modelos para que tomen ese nombre una vez que se creen colecciones a partir de ellos, sino que ahora en versión 5.0  es "protected $table=*nombre*").
+*La documentación relacionada al lanzamiento de la versión 5.0 (link de arriba) ya parece incluir instrucciones más detalladas y claras para realizar la integración, a diferencia de aquella en la que me basé la primera vez (https://www.mongodb.com/docs/drivers/php/laravel-mongodb/v4.x/) donde tuve que hacer uso de los dos links de debajo (cuyo contenido es el mismo) y de ChatGPT. 
+
+
 BASADO EN: https://learn.mongodb.com/courses/getting-started-with-laravel-and-mongodb?_ga=2.66090030.1857813636.1724106116-380764657.1717698978
 *Que básicamente es lo mismo que en página "MongoDB and Laravel Integration" ( https://www.mongodb.com/resources/products/compatibilities/mongodb-laravel-integration )
 
@@ -127,7 +132,7 @@ Este comando crea el modelo Post, su migración y su controlador a la vez, en la
 
 
 En modelo Post (Post.php) cambiar lo de "use Illuminate\Database\Eloquent\Model;", que artisan coloca ya por defecto, por "use MongoDB\Laravel\Eloquent\Model;"
-también se agregan líneas "protected $connection = 'mongodb';", y "// protected $collection = 'blog_posts';" (esta última se comentó después de que se colocó. Cuando se hace una primera inserción en una BD en MongoDB empleando un modelo de Laravel, Laravel en automático crea una colección con el mismo nombre del modelo pero en plural, con esta línea lo que se logra es que cuando se genere la colección sea con el nombre indicado en esa propiedad $collection)
+también se agregan líneas "protected $connection = 'mongodb';", y "// protected $table = 'blog_posts';" (esta última se comentó después de que se colocó. Cuando se hace una primera inserción en una BD en MongoDB empleando un modelo de Laravel, Laravel en automático crea una colección con el mismo nombre del modelo pero en plural, con esta línea lo que se logra es que cuando se genere la colección sea con el nombre indicado en esa propiedad $table)
 
 
 En PostController.php:
