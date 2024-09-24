@@ -148,10 +148,10 @@ public function show($slug)
 
 -Se agrega la ruta que hará referencia a ese método en web.php:
 "
-Route::get('/post/{slug}', [PostController::class, 'show']);
+Route::get('/posts/show/{slug}', [PostController::class, 'show']);
 "
 
--Se crea la vista donde se mostrará el post, creando archivo resources/views/post.blade.php, que dentro tendrá:
+-Se crea la vista donde se mostrará el post, creando archivo myapp\resources\views\posts\show.blade.php, que dentro tendrá:
 "
 <!DOCTYPE html>
 <html>
@@ -165,7 +165,7 @@ Route::get('/post/{slug}', [PostController::class, 'show']);
 </html>
 "
 
-*Se prueba funcionalidad hasta ahora con: http://localhost:8000/post/first-blog-post
+*Se prueba funcionalidad hasta ahora con: http://localhost:8000/posts/show/first-blog-post
 
 
 
@@ -173,9 +173,9 @@ Route::get('/post/{slug}', [PostController::class, 'show']);
 
 El resto del CRUD (inserción, actualización y eliminación), si bien en la documentación se muestra que se hizo a manera de empleando una API creada en este proyecto de Laravel con sus respectivos Endpoint que corresponderán a cada operación, y los cuales servirán para ejecutar los métodos correspondientes a los que hacen referencia de el controller en cuestión, en este caso PostController.php (todo esto sería lo correspondiente a en archivo routes/api.php, que tuvo que ser creado antes), y todas las operaciones siendo ejecutadas empleando POSTMAN... al quere hacerlo así en POSTMAN marcaba "419 | Page Expired", y no es problema de MongoDB como supuse en un inicio, sino que es en general, ya que al hacer otro proyecto de prueba y con MySQL el error seguía apreciendo en POSTMAN. 
 Por lo tanto ya que el uso de POSTMAN no es tan indispensable por ahora sino que lo es más el poder hacer el CRUD como tal en una BD de un cluster en MongoDB Atlas, estas operaciones se harán a manera de vistas y con el Controller, aunque no venga así en la documentación.
-ASIMISMO, SE REDEFINIÓ LA ESTRCUTURA DEL PROYECTO EN CUANTO A VISTAS Y RUTAS PARA NO TENER PROBLEMAS CON NOMBRES DE ARCHIVOS Y ASÍ.
+ASIMISMO, SE REDEFINIÓ LA ESTRUCTURA DEL PROYECTO EN CUANTO A VISTAS Y RUTAS PARA NO TENER PROBLEMAS CON NOMBRES DE ARCHIVOS Y ASÍ.
 
-**NOTA: Al parecer hay un problema en cómo MongoDB almacena y gestiona las sesiones en Laravel, lo que afecta la validación del token CSRF en solicitudes POST. Ya que incluso en la colección "sessions" (generada automáticamente debido a que en archivo .env "SESSION_DRIVER=file" y en config/session.php "'driver' => env('SESSION_DRIVER', 'database'),") se crea un registro cada vez que se recarga la página.
+**NOTA: Al parecer hay un problema en como MongoDB almacena y gestiona las sesiones en Laravel, lo que afecta la validación del token CSRF en solicitudes POST. Ya que incluso en la colección "sessions" (generada automáticamente debido a que en archivo .env "SESSION_DRIVER=file" y en config/session.php "'driver' => env('SESSION_DRIVER', 'database'),") se crea un registro cada vez que se recarga la página.
 Para poder hacer solicitudes POST (como envío de formularios con método POST, por ejemplo los usados para hacer inserción de registros):
 -En archivo .env: 
 cambiar en "SESSION_DRIVER=database" de "database" a "file" 
