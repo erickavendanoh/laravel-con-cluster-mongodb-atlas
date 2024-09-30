@@ -180,7 +180,7 @@ El resto del CRUD (inserción, actualización y eliminación), si bien en la doc
 Por lo tanto ya que el uso de POSTMAN no es tan indispensable por ahora sino que lo es más el poder hacer el CRUD como tal en una BD de un cluster en MongoDB Atlas, estas operaciones se harán a manera de vistas y con el Controller, aunque no venga así en la documentación.
 ASIMISMO, SE REDEFINIÓ LA ESTRUCTURA DEL PROYECTO EN CUANTO A VISTAS Y RUTAS PARA NO TENER PROBLEMAS CON NOMBRES DE ARCHIVOS Y ASÍ.
 
-**NOTA: Al parecer hay un problema en como MongoDB almacena y gestiona las sesiones en Laravel, lo que afecta la validación del token CSRF en solicitudes POST. Ya que incluso en la colección "sessions" (generada automáticamente debido a que en archivo .env "SESSION_DRIVER=file" y en config/session.php "'driver' => env('SESSION_DRIVER', 'database'),") se crea un registro cada vez que se recarga la página.
+**NOTA: Al parecer hay un problema en como MongoDB almacena y gestiona las sesiones en Laravel, lo que afecta la validación del token CSRF en solicitudes POST. Ya que incluso en la colección "sessions" (generada automáticamente debido a que en archivo .env "SESSION_DRIVER=database" y en config/session.php "'driver' => env('SESSION_DRIVER', 'database'),") se crea un registro cada vez que se recarga la página.
 Para poder hacer solicitudes POST (como envío de formularios con método POST, por ejemplo los usados para hacer inserción de registros):
 -En archivo .env: 
 cambiar en "SESSION_DRIVER=database" de "database" a "file" 
